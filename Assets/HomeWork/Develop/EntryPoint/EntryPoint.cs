@@ -4,10 +4,11 @@ using Assets.HomeWork.Develop.DI;
 using Assets.HomeWork.Develop.CommonServices.CoroutinePerfomer;
 using Assets.HomeWork.Develop.CommonServices.AssetsManagment;
 using Assets.HomeWork.Develop.CommonServices.LoadingScreen;
+using Assets.HomeWork.Develop.CommonServices.SceneManagment;
 
 namespace Assets.HomeWork.Develop.EntryPoint
 {
-    public class EntryPointv : MonoBehaviour
+    public class EntryPoint : MonoBehaviour
     {
         [SerializeField] private Bootstrap _gameBootstrap;
 
@@ -24,11 +25,9 @@ namespace Assets.HomeWork.Develop.EntryPoint
             RegisterResourcesAssetLoader(projectContainer);
             RegisterCoroutinePerformer(projectContainer);
 
-           RegisterLoadingCurtain(projectContainer);
-        //    RegisterSceneLoader(projectContainer);
-          //  RegisterSceneSwitcher(projectContainer);
-
-          //  RegisterSaveLoadService(projectContainer);
+            RegisterLoadingCurtain(projectContainer);
+            RegisterSceneLoader(projectContainer);
+            RegisterSceneSwitcher(projectContainer);
 
             //все регистрации прошли
             projectContainer.Resolve<ICoroutinePerformer>().StartPerform(_gameBootstrap.Run(projectContainer));
@@ -40,16 +39,13 @@ namespace Assets.HomeWork.Develop.EntryPoint
             Application.targetFrameRate = 144;
         }
 
-     /*   private void RegisterSaveLoadService(DIContainer container)
-            => container.RegisterAsSingle<ISaveLoadSerivce>(c => new SaveLoadService(new JsonSerializer(), new LocalDataRepository()));
-
         private void RegisterSceneSwitcher(DIContainer container)
             => container.RegisterAsSingle(c
                 => new SceneSwitcher(
                     c.Resolve<ICoroutinePerformer>(),
                     c.Resolve<ILoadingCurtain>(),
                     c.Resolve<ISceneLoader>(),
-                    c));*/
+                    c));
 
         private void RegisterResourcesAssetLoader(DIContainer container)
             => container.RegisterAsSingle(c => new ResourсesAssetLoader());
@@ -61,7 +57,7 @@ namespace Assets.HomeWork.Develop.EntryPoint
                 ResourсesAssetLoader resourcesAssetLoader = c.Resolve<ResourсesAssetLoader>();
 
                 CoroutinePerformer coroutinePerformerPrefab = resourcesAssetLoader
-                .LoadResource<CoroutinePerformer>("Infrastructure/CoroutinePerformer");
+                .LoadResource<CoroutinePerformer>(InfrastructureAssetPaths.CoroutinePerformerPath);
 
                 return Instantiate(coroutinePerformerPrefab);
             });
@@ -74,13 +70,13 @@ namespace Assets.HomeWork.Develop.EntryPoint
                 ResourсesAssetLoader resourcesAssetLoader = c.Resolve<ResourсesAssetLoader>();
 
                 StandardLoadingCurtain standardLoadingCurtainPrefab = resourcesAssetLoader
-                .LoadResource<StandardLoadingCurtain>("Infrastructure/StandardLoadingCurtain");
+                .LoadResource<StandardLoadingCurtain>(InfrastructureAssetPaths.LoadingCurtainPath);
 
                 return Instantiate(standardLoadingCurtainPrefab);
             });
         }
 
-       /* private void RegisterSceneLoader(DIContainer container)
-            => container.RegisterAsSingle<ISceneLoader>(c => new DefaultSceneLoader());*/
+        private void RegisterSceneLoader(DIContainer container)
+            => container.RegisterAsSingle<ISceneLoader>(c => new DefaultSceneLoader());
     }
 }

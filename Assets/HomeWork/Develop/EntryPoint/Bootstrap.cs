@@ -3,6 +3,7 @@ using UnityEngine;
 using Assets.HomeWork.Develop.DI;
 using System.Collections;
 using Assets.HomeWork.Develop.CommonServices.LoadingScreen;
+using Assets.HomeWork.Develop.CommonServices.SceneManagment;
 
 namespace Assets.HomeWork.Develop.EntryPoint
 {
@@ -13,7 +14,7 @@ namespace Assets.HomeWork.Develop.EntryPoint
         public IEnumerator Run(DIContainer container)
         {
             ILoadingCurtain loadingCurtain = container.Resolve<ILoadingCurtain>();
-            //SceneSwitcher sceneSwitcher = container.Resolve<SceneSwitcher>();
+            SceneSwitcher sceneSwitcher = container.Resolve<SceneSwitcher>();
 
             loadingCurtain.Show();
 
@@ -23,13 +24,13 @@ namespace Assets.HomeWork.Develop.EntryPoint
 
             yield return new WaitForSeconds(1.5f);//инициализация какого-то процесса инициализация
 
-           /* Debug.Log("Завершается инициализация сервисов проекта, начинается переход на какую-то сцену");*/
+            Debug.Log("Завершается инициализация сервисов проекта, начинается переход на какую-то сцену");
 
             loadingCurtain.Hide();
 
             //переход на следующий сцену с помощью сервиса смены сцен
 
-            //sceneSwitcher.ProcessSwitchSceneFor(new OutpurBootstrapArgs(new MainMenuInputArgs()));*/
+            sceneSwitcher.ProcessSwitchSceneFor(new OutpurBootstrapArgs(new MainMenuInputArgs()));
         }
     }
 }

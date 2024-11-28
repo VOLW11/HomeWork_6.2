@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/HomeWork/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/HomeWork/Scenes/Bootstrap.unity
+    guid: 7401da0b9322c4a4587458fe869fcdbe
+  - enabled: 1
+    path: Assets/HomeWork/Scenes/Empty.unity
+    guid: b25b52693e7b32d40b7c788a01090024
+  - enabled: 1
+    path: Assets/HomeWork/Scenes/Gameplay.unity
+    guid: 0369f97ce019145468cede0cce95fce9
+  - enabled: 1
+    path: Assets/HomeWork/Scenes/MainMenu.unity
+    guid: 62d8d5910848a754fbb77f5cfb9c1473
   m_configObjects: {}
