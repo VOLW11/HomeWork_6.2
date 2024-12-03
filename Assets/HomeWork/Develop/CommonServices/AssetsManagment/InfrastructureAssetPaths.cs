@@ -4,5 +4,6 @@
     {
         public const string CoroutinePerformerPath = "Infrastructure/CoroutinePerformer";
         public const string LoadingCurtainPath = "Infrastructure/StandardLoadingCurtain";
+        public const string GameLogicPath = "Infrastructure/GameLogic";
     }
 }

@@ -1,5 +1,9 @@
+using Assets.HomeWork.Develop.CommonServices.AssetsManagment;
+using Assets.HomeWork.Develop.CommonServices.LoadingScreen;
 using Assets.HomeWork.Develop.CommonServices.SceneManagment;
 using Assets.HomeWork.Develop.DI;
+using Assets.HomeWork.Develop.ForHome;
+using Assets.HomeWork.ForHome;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +13,7 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
     public class GameplayBootstrap : MonoBehaviour
     {
         private DIContainer _container;
+        private GameplayInputArgs _gameplayInputArgs;
 
         public IEnumerator Run(DIContainer container, GameplayInputArgs gameplayInputArgs)
         {
@@ -17,8 +22,10 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
             ProcessRegistrations();
 
             Debug.Log($"Подгружаем ресурсы для уровня {gameplayInputArgs.LevelNumber}");
-            Debug.Log("Создаем персонажа");
-            Debug.Log("Сцена готова можно начинать игру");
+
+            _gameplayInputArgs = gameplayInputArgs;
+
+            GameLogic gameLogic = _container.Resolve<GameLogic>();
 
             yield return new WaitForSeconds(1f);
         }
@@ -26,6 +33,17 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
         private void ProcessRegistrations()
         {
             //Делаем регистрации для сцены геймплея
+            _container.RegisterAsSingle(c =>
+            {
+                ResourсesAssetLoader resourcesAssetLoader = c.Resolve<ResourсesAssetLoader>();
+
+                GameLogic gameLogicPrefab = resourcesAssetLoader
+                .LoadResource<GameLogic>(InfrastructureAssetPaths.GameLogicPath);
+
+                gameLogicPrefab.Initialize(_gameplayInputArgs.SelectCombination, c.Resolve<RandomGenerator>());                
+
+                return Instantiate(gameLogicPrefab);
+            });
         }
 
         private void Update()
