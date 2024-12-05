@@ -8,7 +8,6 @@ namespace Assets.HomeWork.Develop.ForHome
     public class GameLogic : MonoBehaviour
     {
         private List<string> _combination = new();
-        // private bool isWork = true;
         private int _listElement = 0;
         private string _messageCombination;
         private RandomGenerator _generator;
@@ -24,43 +23,36 @@ namespace Assets.HomeWork.Develop.ForHome
         }
 
         public bool IsWin { get; private set; }
+        public bool IsLoss { get; private set; }
 
         private void Update()
         {
             if (IsWin)
                 return;
 
-            if (Input.anyKeyDown)
+            if (IsLoss)
+                return;
+
+            if (Input.inputString != _combination[_listElement] && Input.anyKeyDown)
+            {
+                Debug.Log("Проигрыш! Введен неверный символ");
+                IsLoss = true;
+            }
+
+            if (Input.GetKeyDown(_combination[_listElement]))
             {
 
-                if (Input.GetKeyUp(_combination[_listElement]))
+                if (_listElement < _combination.Count - 1)
                 {
-                    Debug.Log("yes");
-
-                    if (_listElement < _combination.Count - 1)
-                    {
-                        _listElement++;
-                    }
-
-                    else
-                    {
-                        Debug.Log("Поздравляем! Введена верная комбинация");
-                        IsWin = true;
-                    }
+                    _listElement++;
                 }
-
 
                 else
                 {
-
-                    Debug.Log("no");
-
-
+                    Debug.Log("Поздравляем! Введена верная комбинация");
+                    IsWin = true;
                 }
             }
-             /* else
-                  Debug.Log(_combination[_listElement]);*/
-
         }
 
         private void OutputCombination()

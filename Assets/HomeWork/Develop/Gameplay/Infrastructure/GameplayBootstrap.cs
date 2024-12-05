@@ -14,6 +14,7 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
     {
         private DIContainer _container;
         private GameplayInputArgs _gameplayInputArgs;
+        private GameLogic _gameLogic;
 
         public IEnumerator Run(DIContainer container, GameplayInputArgs gameplayInputArgs)
         {
@@ -25,9 +26,9 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
 
             _gameplayInputArgs = gameplayInputArgs;
 
-            GameLogic gameLogic = _container.Resolve<GameLogic>();
+            _gameLogic = _container.Resolve<GameLogic>();
 
-            gameLogic.Initialize(_gameplayInputArgs.SelectCombination, _container.Resolve<RandomGenerator>());
+            _gameLogic.Initialize(_gameplayInputArgs.SelectCombination, _container.Resolve<RandomGenerator>());
 
             yield return new WaitForSeconds(1f);
         }
@@ -40,9 +41,7 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
                 ResourñesAssetLoader resourcesAssetLoader = c.Resolve<ResourñesAssetLoader>();
 
                 GameLogic gameLogicPrefab = resourcesAssetLoader
-                .LoadResource<GameLogic>(InfrastructureAssetPaths.GameLogicPath);
-
-                //gameLogicPrefab.Initialize(_gameplayInputArgs.SelectCombination, c.Resolve<RandomGenerator>());                
+                .LoadResource<GameLogic>(InfrastructureAssetPaths.GameLogicPath);               
 
                 return Instantiate(gameLogicPrefab);
             });
@@ -50,9 +49,14 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && _gameLogic.IsWin)
             {
                 _container.Resolve<SceneSwitcher>().ProcessSwitchSceneFor(new OutputGameplayArgs(new MainMenuInputArgs()));
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && _gameLogic.IsLoss)
+            {
+                _container.Resolve<SceneSwitcher>().ProcessSwitchSceneFor(new OutputGameplayArgs(new GameplayInputArgs(2, _gameplayInputArgs.SelectCombination)));
             }
         }
     }
