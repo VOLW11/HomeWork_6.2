@@ -27,6 +27,8 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
 
             GameLogic gameLogic = _container.Resolve<GameLogic>();
 
+            gameLogic.Initialize(_gameplayInputArgs.SelectCombination, _container.Resolve<RandomGenerator>());
+
             yield return new WaitForSeconds(1f);
         }
 
@@ -40,7 +42,7 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
                 GameLogic gameLogicPrefab = resourcesAssetLoader
                 .LoadResource<GameLogic>(InfrastructureAssetPaths.GameLogicPath);
 
-                gameLogicPrefab.Initialize(_gameplayInputArgs.SelectCombination, c.Resolve<RandomGenerator>());                
+                //gameLogicPrefab.Initialize(_gameplayInputArgs.SelectCombination, c.Resolve<RandomGenerator>());                
 
                 return Instantiate(gameLogicPrefab);
             });

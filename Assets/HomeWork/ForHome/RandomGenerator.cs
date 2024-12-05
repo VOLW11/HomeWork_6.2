@@ -12,6 +12,8 @@ namespace Assets.HomeWork.ForHome
 
         public List<string> CreateCombination(ISelectCombination selectCombination)
         {
+            _randomCombination.Clear();
+
             for (int i = 0; i < selectCombination.Type.Count; i++)
             {
                 _randomCombination.Add

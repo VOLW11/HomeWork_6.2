@@ -9,7 +9,7 @@ namespace Assets.HomeWork.Develop.ForHome
     {
         private List<string> _combination = new();
         // private bool isWork = true;
-        private int _combinationCount = 0;
+        private int _listElement = 0;
         private string _messageCombination;
         private RandomGenerator _generator;
         private ISelectCombination _selectCombination;
@@ -18,31 +18,49 @@ namespace Assets.HomeWork.Develop.ForHome
         {
             _selectCombination = selectCombination;
             _generator = generator;
-
             _combination = _generator.CreateCombination(_selectCombination);
 
             OutputCombination();
         }
 
+        public bool IsWin { get; private set; }
+
         private void Update()
         {
+            if (IsWin)
+                return;
+
             if (Input.anyKeyDown)
             {
-               if (Input.GetKeyDown(_combination[_combinationCount]))
+
+                if (Input.GetKeyUp(_combination[_listElement]))
                 {
                     Debug.Log("yes");
 
-                    _combinationCount++;
+                    if (_listElement < _combination.Count - 1)
+                    {
+                        _listElement++;
+                    }
+
+                    else
+                    {
+                        Debug.Log("Поздравляем! Введена верная комбинация");
+                        IsWin = true;
+                    }
                 }
 
-               /* else
+
+                else
                 {
-                    //  isWork = false;
 
                     Debug.Log("no");
-                    Debug.Log(_combination[_combinationCount]);
-                }*/
+
+
+                }
             }
+             /* else
+                  Debug.Log(_combination[_listElement]);*/
+
         }
 
         private void OutputCombination()
