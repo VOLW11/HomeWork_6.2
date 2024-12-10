@@ -1,3 +1,5 @@
+using Assets.HomeWork.Develop.CommonServices.DataManagment;
+using Assets.HomeWork.Develop.CommonServices.DataManagment.DataProviders;
 using Assets.HomeWork.Develop.CommonServices.SceneManagment;
 using Assets.HomeWork.Develop.DI;
 using Assets.HomeWork.ForHome;
@@ -37,6 +39,26 @@ namespace Assets.HomeWork.Develop.MainMenu.Infrastructure
             {
                 _container.Resolve<SceneSwitcher>().ProcessSwitchSceneFor(new OutputMainMenuArgs
                     (new GameplayInputArgs(2, new ListOfLetters())));
+            }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                ISaveLoadService saveLoadService = _container.Resolve<ISaveLoadService>();
+
+                if (saveLoadService.TryLoad(out PlayerData playerData))
+                {
+                   // playerData.Money++
+                }
+
+                else
+                {
+                    PlayerData originPlayerData = new PlayerData()
+                    {
+                        //данные по умолчанию
+                    };
+
+                    saveLoadService.Save(originPlayerData);
+                }
             }
         }
     }

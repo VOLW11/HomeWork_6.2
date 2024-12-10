@@ -7,6 +7,8 @@ using Assets.HomeWork.Develop.CommonServices.LoadingScreen;
 using Assets.HomeWork.Develop.CommonServices.SceneManagment;
 using System;
 using Assets.HomeWork.ForHome;
+using System.ComponentModel;
+using Assets.HomeWork.Develop.CommonServices.DataManagment;
 
 namespace Assets.HomeWork.Develop.EntryPoint
 {
@@ -31,6 +33,7 @@ namespace Assets.HomeWork.Develop.EntryPoint
             RegisterSceneLoader(projectContainer);
             RegisterSceneSwitcher(projectContainer);
            
+            RegisterSaveLoadService(projectContainer);
             
             RegisterRandomGenerator(projectContainer);
 
@@ -43,6 +46,9 @@ namespace Assets.HomeWork.Develop.EntryPoint
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 144;
         }
+
+        private void RegisterSaveLoadService(DIContainer container)
+            => container.RegisterAsSingle<ISaveLoadService>(c => new SaveLoadService(new JsonSerializer(), new LocalDataRepository()));
 
         private void RegisterRandomGenerator(DIContainer container)
         {

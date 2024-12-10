@@ -1,6 +1,6 @@
 ﻿namespace Assets.HomeWork.Develop.CommonServices.DataManagment
 {
-    public class SaveLoadService : ISaveLoadSerivce
+    public class SaveLoadService : ISaveLoadService
     {
         private readonly IDataSerializer _serializer;   
         private readonly IDataRepository _repository;
