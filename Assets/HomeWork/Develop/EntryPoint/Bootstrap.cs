@@ -4,6 +4,8 @@ using Assets.HomeWork.Develop.DI;
 using System.Collections;
 using Assets.HomeWork.Develop.CommonServices.LoadingScreen;
 using Assets.HomeWork.Develop.CommonServices.SceneManagment;
+using Assets.HomeWork.Develop.CommonServices.DataManagment.DataProviders;
+using Assets.HomeWork.Develop.CommonServices.ConfigsManagment;
 
 namespace Assets.HomeWork.Develop.EntryPoint
 {
@@ -21,6 +23,9 @@ namespace Assets.HomeWork.Develop.EntryPoint
             Debug.Log("Начинается инициализация сервисов");
 
             //Инициализаций всех (подгрузка данных/конфигов/инит сервисов рекламы/аналитики и тп)*/
+
+            container.Resolve<ConfigsProviderService>().LoadAll();
+            container.Resolve<PlayerDataProvider>().Load();
 
             yield return new WaitForSeconds(1.5f);//инициализация какого-то процесса инициализация
 

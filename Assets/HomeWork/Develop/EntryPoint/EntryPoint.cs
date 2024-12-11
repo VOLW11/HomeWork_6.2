@@ -9,6 +9,9 @@ using System;
 using Assets.HomeWork.ForHome;
 using System.ComponentModel;
 using Assets.HomeWork.Develop.CommonServices.DataManagment;
+using Assets.HomeWork.Develop.CommonServices.DataManagment.DataProviders;
+using Assets.HomeWork.Develop.CommonServices.Wallet;
+using Assets.HomeWork.Develop.CommonServices.ConfigsManagment;
 
 namespace Assets.HomeWork.Develop.EntryPoint
 {
@@ -34,8 +37,15 @@ namespace Assets.HomeWork.Develop.EntryPoint
             RegisterSceneSwitcher(projectContainer);
            
             RegisterSaveLoadService(projectContainer);
+            RegisterPlayerDataProvider(projectContainer); 
             
+            RegisterWalletService(projectContainer);   
+            
+            RegisterConfigsProviderService(projectContainer);           
+
             RegisterRandomGenerator(projectContainer);
+
+            projectContainer.Initialize();
 
             //все регистрации прошли
             projectContainer.Resolve<ICoroutinePerformer>().StartPerform(_gameBootstrap.Run(projectContainer));
@@ -46,6 +56,15 @@ namespace Assets.HomeWork.Develop.EntryPoint
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = 144;
         }
+
+        private void RegisterConfigsProviderService(DIContainer container)
+            => container.RegisterAsSingle(c => new ConfigsProviderService(c.Resolve<ResourсesAssetLoader>()));
+
+        private void RegisterWalletService(DIContainer container)
+            => container.RegisterAsSingle(c => new WalletService(c.Resolve<PlayerDataProvider>())).NonLazy();  
+
+        private void RegisterPlayerDataProvider(DIContainer container)
+            => container.RegisterAsSingle<PlayerDataProvider>(c => new PlayerDataProvider(c.Resolve<ISaveLoadService>(), c.Resolve<ConfigsProviderService>()));
 
         private void RegisterSaveLoadService(DIContainer container)
             => container.RegisterAsSingle<ISaveLoadService>(c => new SaveLoadService(new JsonSerializer(), new LocalDataRepository()));

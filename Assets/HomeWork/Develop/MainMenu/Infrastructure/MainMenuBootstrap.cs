@@ -1,7 +1,10 @@
+using Assets.HomeWork.Develop.CommonServices.AssetsManagment;
 using Assets.HomeWork.Develop.CommonServices.DataManagment;
 using Assets.HomeWork.Develop.CommonServices.DataManagment.DataProviders;
 using Assets.HomeWork.Develop.CommonServices.SceneManagment;
+using Assets.HomeWork.Develop.CommonServices.Wallet;
 using Assets.HomeWork.Develop.DI;
+using Assets.HomeWork.Develop.MainMenu.UI;
 using Assets.HomeWork.ForHome;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +28,13 @@ namespace Assets.HomeWork.Develop.MainMenu.Infrastructure
         private void ProcessRegistrations()
         {
             //Делаем регистрации для сцены геймплея
+            _container.RegisterAsSingle(c =>
+            {
+                MainMenuUIRoot mainMenuUIRootPrefab = c.Resolve<ResourсesAssetLoader>().LoadResource<MainMenuUIRoot>("MainMenu/UI/MainMenuUIRoot");
+                return Instantiate(mainMenuUIRootPrefab);
+            }).NonLazy();
+
+            _container.Initialize();
         }
 
         private void Update()
@@ -41,24 +51,16 @@ namespace Assets.HomeWork.Develop.MainMenu.Infrastructure
                     (new GameplayInputArgs(2, new ListOfLetters())));
             }
 
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                WalletService wallet = _container.Resolve<WalletService>();
+                wallet.Add(CurrencyTypes.Gold, 100);
+                Debug.Log($"Деняк: {wallet.GetCurrency(CurrencyTypes.Gold).Value}");
+            }
+
             if (Input.GetKeyDown(KeyCode.S))
             {
-                ISaveLoadService saveLoadService = _container.Resolve<ISaveLoadService>();
-
-                if (saveLoadService.TryLoad(out PlayerData playerData))
-                {
-                   // playerData.Money++
-                }
-
-                else
-                {
-                    PlayerData originPlayerData = new PlayerData()
-                    {
-                        //данные по умолчанию
-                    };
-
-                    saveLoadService.Save(originPlayerData);
-                }
+                _container.Resolve<PlayerDataProvider>().Save();
             }
         }
     }

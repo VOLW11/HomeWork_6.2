@@ -45,6 +45,8 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
 
                 return Instantiate(gameLogicPrefab);
             });
+
+            _container.Initialize();
         }
 
         private void Update()
