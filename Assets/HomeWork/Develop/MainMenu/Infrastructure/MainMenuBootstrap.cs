@@ -3,6 +3,7 @@ using Assets.HomeWork.Develop.CommonServices.DataManagment;
 using Assets.HomeWork.Develop.CommonServices.DataManagment.DataProviders;
 using Assets.HomeWork.Develop.CommonServices.SceneManagment;
 using Assets.HomeWork.Develop.CommonServices.Wallet;
+using Assets.HomeWork.Develop.CommonUI.Wallet;
 using Assets.HomeWork.Develop.DI;
 using Assets.HomeWork.Develop.MainMenu.UI;
 using Assets.HomeWork.ForHome;
@@ -28,11 +29,18 @@ namespace Assets.HomeWork.Develop.MainMenu.Infrastructure
         private void ProcessRegistrations()
         {
             //Äåëàåì ðåãèñòðàöèè äëÿ ñöåíû ãåéìïëåÿ
+            _container.RegisterAsSingle(c => new WalletPresenterFactory(c));
+
             _container.RegisterAsSingle(c =>
             {
                 MainMenuUIRoot mainMenuUIRootPrefab = c.Resolve<ResourñesAssetLoader>().LoadResource<MainMenuUIRoot>("MainMenu/UI/MainMenuUIRoot");
                 return Instantiate(mainMenuUIRootPrefab);
             }).NonLazy();
+
+            _container
+           .RegisterAsSingle(c => c.Resolve<WalletPresenterFactory>()
+           .CreateWalletPresenter(c.Resolve<MainMenuUIRoot>().WalletView))
+           .NonLazy();
 
             _container.Initialize();
         }
