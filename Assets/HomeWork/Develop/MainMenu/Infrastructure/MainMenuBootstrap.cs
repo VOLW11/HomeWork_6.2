@@ -30,6 +30,7 @@ namespace Assets.HomeWork.Develop.MainMenu.Infrastructure
         {
             //Делаем регистрации для сцены геймплея
             _container.RegisterAsSingle(c => new WalletPresenterFactory(c));
+            _container.RegisterAsSingle(c => new CounterPresenterFactory(c));
 
             _container.RegisterAsSingle(c =>
             {
@@ -40,6 +41,11 @@ namespace Assets.HomeWork.Develop.MainMenu.Infrastructure
             _container
            .RegisterAsSingle(c => c.Resolve<WalletPresenterFactory>()
            .CreateWalletPresenter(c.Resolve<MainMenuUIRoot>().WalletView))
+           .NonLazy();
+
+            _container
+           .RegisterAsSingle(c => c.Resolve<CounterPresenterFactory>()
+           .CreateCounterPresenter(c.Resolve<MainMenuUIRoot>().WinAndLossView))
            .NonLazy();
 
             _container.Initialize();

@@ -12,6 +12,8 @@ using Assets.HomeWork.Develop.CommonServices.DataManagment;
 using Assets.HomeWork.Develop.CommonServices.DataManagment.DataProviders;
 using Assets.HomeWork.Develop.CommonServices.Wallet;
 using Assets.HomeWork.Develop.CommonServices.ConfigsManagment;
+using Assets.HomeWork.Develop.ForHome;
+using Assets.HomeWork.Develop.Gameplay.Infrastructure;
 
 namespace Assets.HomeWork.Develop.EntryPoint
 {
@@ -41,7 +43,10 @@ namespace Assets.HomeWork.Develop.EntryPoint
             
             RegisterWalletService(projectContainer);   
             
-            RegisterConfigsProviderService(projectContainer);           
+            RegisterConfigsProviderService(projectContainer); 
+            
+
+            RegisterWinLossCounterService(projectContainer);
 
             RegisterRandomGenerator(projectContainer);
 
@@ -50,6 +55,7 @@ namespace Assets.HomeWork.Develop.EntryPoint
             //все регистрации прошли
             projectContainer.Resolve<ICoroutinePerformer>().StartPerform(_gameBootstrap.Run(projectContainer));
         }
+
 
         private void SetupAppSettings()
         {
@@ -68,6 +74,11 @@ namespace Assets.HomeWork.Develop.EntryPoint
 
         private void RegisterSaveLoadService(DIContainer container)
             => container.RegisterAsSingle<ISaveLoadService>(c => new SaveLoadService(new JsonSerializer(), new LocalDataRepository()));
+
+        //
+        private void RegisterWinLossCounterService(DIContainer container)
+         => container.RegisterAsSingle(c => new WinLossCounterService(c.Resolve<PlayerDataProvider>())).NonLazy(); 
+
 
         private void RegisterRandomGenerator(DIContainer container)
         {

@@ -3,7 +3,10 @@ using Assets.HomeWork.Develop.CommonServices.LoadingScreen;
 using Assets.HomeWork.Develop.CommonServices.SceneManagment;
 using Assets.HomeWork.Develop.DI;
 using Assets.HomeWork.Develop.ForHome;
+using Assets.HomeWork.Develop.Gameplay.UI;
+using Assets.HomeWork.Develop.MainMenu.UI;
 using Assets.HomeWork.ForHome;
+using Assets.HomeWork.ForHome.Combination;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +33,8 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
 
             _gameLogic.Initialize(_gameplayInputArgs.SelectCombination, _container.Resolve<RandomGenerator>());
 
+            _container.Resolve<WinLossCounterService>().Initialize(_gameLogic);
+
             yield return new WaitForSeconds(1f);
         }
 
@@ -45,6 +50,19 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
 
                 return Instantiate(gameLogicPrefab);
             });
+
+            _container.RegisterAsSingle(c =>
+            {
+                GameplayUI gameplayUIPrefab = c.Resolve<ResourñesAssetLoader>().LoadResource<GameplayUI>("Gameplay/UI/GameplayUI");
+                return Instantiate(gameplayUIPrefab);
+            }).NonLazy();
+
+            _container.RegisterAsSingle(c => new CombinationPresenterFactory(c));
+
+            _container
+          .RegisterAsSingle(c => c.Resolve<CombinationPresenterFactory>()
+          .CreateCombinationPresenter(c.Resolve<GameplayUI>().Combination))
+          .NonLazy();
 
             _container.Initialize();
         }

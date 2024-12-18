@@ -8,5 +8,8 @@ namespace Assets.HomeWork.Develop.CommonServices.DataManagment.DataProviders
     public class PlayerData : ISaveData
     {
        public Dictionary<CurrencyTypes, int> WalletData;
+
+        public int WinCount;
+        public int LossCount;
     }
 }
