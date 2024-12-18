@@ -19,10 +19,10 @@ namespace Assets.HomeWork.ForHome.CombinationUI
             return combinationText;
         }
 
-        public void Remove(CombinationText iconWithText)
+        public void Remove(CombinationText text)
         {
-            _elements.Remove(iconWithText);
-            Destroy(iconWithText.gameObject);
+            _elements.Remove(text);
+            Destroy(text.gameObject);
         }
     }
 }

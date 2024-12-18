@@ -14,27 +14,28 @@ namespace Assets.HomeWork.ForHome
         private WinLossCounterService _counterService;
         private IconsWithTextListView _view;
 
+        private IconWithText _winView;
+        private IconWithText _lossView;
+
         public CounterPresenter(WinLossCounterService counterService, IconsWithTextListView view)
         {
             _view = view;
             _counterService = counterService;
-
         }
 
         public void Initialize()
-        {    
-                IconWithText winView = _view.SpawnElement();
-                winView.SetText("Win " + _counterService.NumberOfWin.ToString());
+        {
+            _winView = _view.SpawnElement();
+            _winView.SetText("Win " + _counterService.NumberOfWin.ToString());
 
-                IconWithText lossView = _view.SpawnElement();
-                lossView.SetText("Loss " + _counterService.NumberOfLoss.ToString());  
+            _lossView = _view.SpawnElement();
+            _lossView.SetText("Loss " + _counterService.NumberOfLoss.ToString());
         }
 
         public void Dispose()
         {
-            //_view.Remove();
-            
+            _view.Remove(_winView);
+            _view.Remove(_lossView);
         }
-
     }
 }

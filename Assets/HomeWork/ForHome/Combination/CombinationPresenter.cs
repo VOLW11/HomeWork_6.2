@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace Assets.HomeWork.ForHome.Combination
 {
@@ -15,12 +16,19 @@ namespace Assets.HomeWork.ForHome.Combination
         private CombinationsTextListView _view;
         private GameLogic _gameLogic;
 
+        private CombinationText _userView;
+        private CombinationText _generatorView;
+
+        private string _messageComputer = "¬ведите комбинацию";
+        private string _messageUser = "¬вод пользовател€";
+
         private IReadOnlyVariable<string> _computerCombination;
         private IReadOnlyVariable<string> _userCombination;
 
-        public CombinationPresenter(CombinationsTextListView view, 
-                                    GameLogic gameLogic, 
-                                    IReadOnlyVariable<string> computerCombination, 
+
+        public CombinationPresenter(CombinationsTextListView view,
+                                    GameLogic gameLogic,
+                                    IReadOnlyVariable<string> computerCombination,
                                     IReadOnlyVariable<string> userCombination)
         {
             _view = view;
@@ -36,30 +44,32 @@ namespace Assets.HomeWork.ForHome.Combination
             _computerCombination.Changed += SetComputerCombination;
             _userCombination.Changed += SetUserCombination;
 
+            _generatorView = _view.SpawnElement();
+            _generatorView.SetTextName(_messageComputer);
 
-            //CombinationText generatorView = _view.SpawnElement();
-            // generatorView.SetTextName("¬ведите последовательность");
-            // generatorView.SetTextValue(_gameLogic.MessageCombination);
+            _userView = _view.SpawnElement();
+            _userView.SetTextName(_messageUser);
         }
 
         public void Dispose()
         {
             _computerCombination.Changed -= SetComputerCombination;
             _userCombination.Changed -= SetUserCombination;
+
+            _view.Remove(_userView);
+            _view.Remove(_generatorView);
         }
 
         public void SetComputerCombination(string arg1, string Value)
         {
-            CombinationText generatorView = _view.SpawnElement();
-            generatorView.SetTextName("¬ведите комбинацию");
-            generatorView.SetTextValue(Value);
+            if (_generatorView != null)
+                _generatorView.SetTextValue(Value);
         }
 
         public void SetUserCombination(string arg1, string Value)
         {
-            CombinationText userView = _view.SpawnElement();
-            userView.SetTextName("¬вод пользовател€");
-            userView.SetTextValue(_userCombination.Value);
+            if (_userView != null)
+                _userView.SetTextValue(Value);
         }
     }
 }
