@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.HomeWork.Develop.Configs.Common.Wallet
 {
-    [CreateAssetMenu(menuName = "Configs/Common/Wallet/NewCurrencyIconsConfig", fileName = "CurrencyIconsConfig")]
+    [CreateAssetMenu(menuName = "Configs/Common/Wallet/CurrencyIconsConfig", fileName = "CurrencyIconsConfig")]
     public class CurrencyIconsConfig : ScriptableObject
     {
         [SerializeField] private List<CurrencyIconConfig> _configs;

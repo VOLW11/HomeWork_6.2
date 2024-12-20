@@ -1,6 +1,8 @@
 using Assets.HomeWork.Develop.CommonServices.AssetsManagment;
+using Assets.HomeWork.Develop.CommonServices.ConfigsManagment;
 using Assets.HomeWork.Develop.CommonServices.LoadingScreen;
 using Assets.HomeWork.Develop.CommonServices.SceneManagment;
+using Assets.HomeWork.Develop.CommonServices.Wallet;
 using Assets.HomeWork.Develop.DI;
 using Assets.HomeWork.Develop.ForHome;
 using Assets.HomeWork.Develop.Gameplay.UI;
@@ -34,6 +36,7 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
             _gameLogic.Initialize(_gameplayInputArgs.SelectCombination, _container.Resolve<RandomGenerator>());
 
             _container.Resolve<WinLossCounterService>().Initialize(_gameLogic);
+            _container.Resolve<PaymentService>().Initialize(_gameLogic);
 
             yield return new WaitForSeconds(1f);
         }
@@ -63,6 +66,10 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
           .RegisterAsSingle(c => c.Resolve<CombinationPresenterFactory>()
           .CreateCombinationPresenter(c.Resolve<GameplayUI>().Combination))
           .NonLazy();
+
+            _container
+          .RegisterAsSingle(c => new PaymentService(c.Resolve<WalletService>(), 
+                                                    c.Resolve<ConfigsProviderService>().SettingPaymentsConfig));
 
             _container.Initialize();
         }
