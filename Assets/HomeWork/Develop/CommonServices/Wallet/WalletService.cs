@@ -27,7 +27,8 @@ namespace Assets.HomeWork.Develop.CommonServices.Wallet
         public void Spend(CurrencyTypes type, int amount)
         {
             if (HasEnough(type, amount) == false)
-                throw new ArgumentException(type.ToString());
+                return;
+               // throw new ArgumentException(type.ToString());
 
             _currencies[type].Value -= amount;
         }

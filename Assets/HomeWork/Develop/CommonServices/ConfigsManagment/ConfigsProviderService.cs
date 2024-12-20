@@ -18,9 +18,7 @@ namespace Assets.HomeWork.Develop.CommonServices.ConfigsManagment
 
         public CurrencyIconsConfig CurrencyIconsConfig { get; private set; }
 
-        public SettingPaymentsConfig SettingPaymentsConfig { get; private set; }
-
-       // public LevelListConfig LevelsListConfig { get; private set; }   
+        public SettingPaymentsConfig SettingPaymentsConfig { get; private set; }  
 
         public void LoadAll()
         {
@@ -28,7 +26,6 @@ namespace Assets.HomeWork.Develop.CommonServices.ConfigsManagment
             LoadStartWalletConfig();
             LoadCurrencyIconsConfig();
             LoadSettingPaymentsConfig();
-          //  LoadLevelsListConfig();
         }
 
         private void LoadStartWalletConfig()
@@ -38,9 +35,7 @@ namespace Assets.HomeWork.Develop.CommonServices.ConfigsManagment
             => CurrencyIconsConfig = _resourcesAssetLoader.LoadResource<CurrencyIconsConfig>("Configs/Common/Wallet/CurrencyIconsConfig");
 
         private void LoadSettingPaymentsConfig()
-           => SettingPaymentsConfig = _resourcesAssetLoader.LoadResource<SettingPaymentsConfig>("ForHome/Configs/Common/SettingPaymentsConfig");
+           => SettingPaymentsConfig = _resourcesAssetLoader.LoadResource<SettingPaymentsConfig>("Configs/Common/SettingPaymentsConfig");
 
-        /*   private void LoadLevelsListConfig()
-               => LevelsListConfig = _resourcesAssetLoader.LoadResource<LevelListConfig>("Configs/Gameplay/Levels/LevelListConfig");*/
     }
 }

@@ -6,13 +6,11 @@
 
     public class GameplayInputArgs : IInputSceneArgs
     {
-        public GameplayInputArgs(int levelNumber, ISelectCombination selectCombination)
+        public GameplayInputArgs(ISelectCombination selectCombination)
         {
-            LevelNumber = levelNumber;
             SelectCombination = selectCombination;
         }
 
-        public int LevelNumber { get; }
         public ISelectCombination SelectCombination { get; }
     }
 

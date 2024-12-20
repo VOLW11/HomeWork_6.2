@@ -56,20 +56,13 @@ namespace Assets.HomeWork.Develop.MainMenu.Infrastructure
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 _container.Resolve<SceneSwitcher>().ProcessSwitchSceneFor(new OutputMainMenuArgs
-                    (new GameplayInputArgs(2, new ListOfNumbers())));
+                    (new GameplayInputArgs(new ListOfNumbers())));
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 _container.Resolve<SceneSwitcher>().ProcessSwitchSceneFor(new OutputMainMenuArgs
-                    (new GameplayInputArgs(2, new ListOfLetters())));
-            }
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                WalletService wallet = _container.Resolve<WalletService>();
-                wallet.Add(CurrencyTypes.Gold, 100);
-                Debug.Log($"Δενÿκ: {wallet.GetCurrency(CurrencyTypes.Gold).Value}");
+                    (new GameplayInputArgs(new ListOfLetters())));
             }
 
             if (Input.GetKeyDown(KeyCode.S))

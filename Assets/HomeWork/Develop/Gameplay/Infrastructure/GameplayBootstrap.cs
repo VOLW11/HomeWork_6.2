@@ -27,8 +27,6 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
 
             ProcessRegistrations();
 
-            Debug.Log($"Подгружаем ресурсы для уровня {gameplayInputArgs.LevelNumber}");
-
             _gameplayInputArgs = gameplayInputArgs;
 
             _gameLogic = _container.Resolve<GameLogic>();
@@ -83,7 +81,7 @@ namespace Assets.HomeWork.Develop.Gameplay.Infrastructure
 
             if (Input.GetKeyDown(KeyCode.Space) && _gameLogic.IsLoss)
             {
-                _container.Resolve<SceneSwitcher>().ProcessSwitchSceneFor(new OutputGameplayArgs(new GameplayInputArgs(2, _gameplayInputArgs.SelectCombination)));
+                _container.Resolve<SceneSwitcher>().ProcessSwitchSceneFor(new OutputGameplayArgs(new GameplayInputArgs(_gameplayInputArgs.SelectCombination)));
             }
         }
     }

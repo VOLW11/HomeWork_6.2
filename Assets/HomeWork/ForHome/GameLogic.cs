@@ -74,8 +74,6 @@ namespace Assets.HomeWork.Develop.ForHome
                 _messageCombination += combination + " ";
 
             computerCombination.Value = _messageCombination;
-
-            Debug.Log($"¬ведите последовательность: {_messageCombination}");
         }
     }
 }
